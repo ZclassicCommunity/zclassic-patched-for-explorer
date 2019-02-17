@@ -50,8 +50,8 @@ static int AppInitRawTx(int argc, char* argv[])
         // First part of help message is specific to this utility
         std::string strUsage = _("Zcash zcash-tx utility version") + " " + FormatFullVersion() + "\n\n" +
             _("Usage:") + "\n" +
-              "  zcash-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded zcash transaction") + "\n" +
-              "  zcash-tx [options] -create [commands]   " + _("Create hex-encoded zcash transaction") + "\n" +
+              "  zclassic-tx [options] <hex-tx> [commands]  " + _("Update hex-encoded zclassic transaction") + "\n" +
+              "  zclassic-tx [options] -create [commands]   " + _("Create hex-encoded zclassic transaction") + "\n" +
               "\n";
 
         fprintf(stdout, "%s", strUsage.c_str());

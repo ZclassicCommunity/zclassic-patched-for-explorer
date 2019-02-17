@@ -270,8 +270,8 @@ BOOST_AUTO_TEST_CASE(rpc_wallet)
     BOOST_CHECK_THROW(CallRPC("getblocksubsidy -1"), runtime_error);
     BOOST_CHECK_NO_THROW(retValue = CallRPC("getblocksubsidy 50000"));
     UniValue obj = retValue.get_obj();
-    BOOST_CHECK_EQUAL(find_value(obj, "miner").get_real(), 10.0);
-    BOOST_CHECK_EQUAL(find_value(obj, "founders").get_real(), 2.5);
+    BOOST_CHECK_EQUAL(find_value(obj, "miner").get_real(), 12.5);
+    BOOST_CHECK_EQUAL(find_value(obj, "founders").get_real(), 0.0);
     BOOST_CHECK_NO_THROW(retValue = CallRPC("getblocksubsidy 1000000"));
     obj = retValue.get_obj();
     BOOST_CHECK_EQUAL(find_value(obj, "miner").get_real(), 6.25);
@@ -1612,7 +1612,7 @@ BOOST_AUTO_TEST_CASE(rpc_z_shieldcoinbase_internals)
     if (mtx.nVersion == 1) {
         mtx.nVersion = 2;
     }
-    
+
     // Test that option -mempooltxinputlimit is respected.
     mapArgs["-mempooltxinputlimit"] = "1";
 
@@ -1689,7 +1689,7 @@ BOOST_AUTO_TEST_CASE(rpc_z_mergetoaddress_parameters)
     LOCK(pwalletMain->cs_wallet);
 
     CheckRPCThrows("z_mergetoaddress 1 2",
-        "Error: z_mergetoaddress is disabled. Run './zcash-cli help z_mergetoaddress' for instructions on how to enable this feature.");
+        "Error: z_mergetoaddress is disabled. Run './zclassic-cli help z_mergetoaddress' for instructions on how to enable this feature.");
 
     // Set global state required for z_mergetoaddress
     fExperimentalMode = true;
@@ -1764,7 +1764,7 @@ BOOST_AUTO_TEST_CASE(rpc_z_mergetoaddress_parameters)
     std::vector<char> v (2 * (ZC_MEMO_SIZE+1));     // x2 for hexadecimal string format
     std::fill(v.begin(),v.end(), 'A');
     std::string badmemo(v.begin(), v.end());
-    CheckRPCThrows("z_mergetoaddress [\"" + taddr1 + "\"] " + aSproutAddr + " 0.0001 100 100 " + badmemo, 
+    CheckRPCThrows("z_mergetoaddress [\"" + taddr1 + "\"] " + aSproutAddr + " 0.0001 100 100 " + badmemo,
         "Invalid parameter, size of memo is larger than maximum allowed 512");
 
     // Mutable tx containing contextual information we need to build tx
@@ -1804,9 +1804,9 @@ BOOST_AUTO_TEST_CASE(rpc_z_mergetoaddress_parameters)
         BOOST_CHECK( find_error(objError, "Recipient parameter missing"));
     }
 
-    std::vector<MergeToAddressInputSproutNote> sproutNoteInputs = 
+    std::vector<MergeToAddressInputSproutNote> sproutNoteInputs =
         {MergeToAddressInputSproutNote{JSOutPoint(), SproutNote(), 0, SproutSpendingKey()}};
-    std::vector<MergeToAddressInputSaplingNote> saplingNoteInputs = 
+    std::vector<MergeToAddressInputSaplingNote> saplingNoteInputs =
         {MergeToAddressInputSaplingNote{SaplingOutPoint(), SaplingNote(), 0, SaplingExpandedSpendingKey()}};
 
     // Sprout and Sapling inputs -> throw
