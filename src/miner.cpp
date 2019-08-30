@@ -516,12 +516,8 @@ void static BitcoinMiner()
     // Each thread has its own counter
     unsigned int nExtraNonce = 0;
 
-    unsigned int n = chainparams.EquihashN();
-    unsigned int k = chainparams.EquihashK();
-
     std::string solver = GetArg("-equihashsolver", "default");
     assert(solver == "tromp" || solver == "default");
-    LogPrint("pow", "Using Equihash solver \"%s\" with n = %u, k = %u\n", solver, n, k);
 
     std::mutex m_cs;
     bool cancelSolver = false;
@@ -556,7 +552,19 @@ void static BitcoinMiner()
             // Create new block
             //
             unsigned int nTransactionsUpdatedLast = mempool.GetTransactionsUpdated();
-            CBlockIndex* pindexPrev = chainActive.Tip();
+
+            // Get the height of current tip
+            int nHeight = chainActive.Height();
+            if (nHeight == -1) {
+                LogPrintf("Error in ZcashMiner: chainActive.Height() returned -1\n");
+                return;
+            }
+            CBlockIndex* pindexPrev = chainActive[nHeight];
+
+            // Get equihash parameters for the next block to be mined.
+            unsigned int n = chainparams.EquihashN(nHeight + 1);
+            unsigned int k = chainparams.EquihashK(nHeight + 1);
+            LogPrint("pow", "Using Equihash solver \"%s\" with n = %u, k = %u\n", solver, n, k);
 
 #ifdef ENABLE_WALLET
             unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlockWithKey(reservekey));
@@ -656,7 +664,8 @@ void static BitcoinMiner()
                 };
 
                 // TODO: factor this out into a function with the same API for each solver.
-                if (solver == "tromp") {
+                // Tromp solver is set to work with 192,7
+                if (solver == "tromp" && n == 192 && k == 7) {
                     // Create solver and initialize it.
                     equi eq(1);
                     eq.setstate(&curr_state);

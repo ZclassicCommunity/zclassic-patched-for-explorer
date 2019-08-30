@@ -38,7 +38,7 @@ class WalletListNotes(BitcoinTestFramework):
         mining_addr = self.nodes[0].listunspent()[0]['address']
 
         # Shield coinbase funds (must be a multiple of 10, no change allowed pre-sapling)
-        receive_amount_10 = Decimal('10.0') - Decimal('0.0001')
+        receive_amount_10 = Decimal('12.5') - Decimal('0.0001')
         recipients = [{"address":sproutzaddr, "amount":receive_amount_10}]
         myopid = self.nodes[0].z_sendmany(mining_addr, recipients)
         txid_1 = wait_and_assert_operationid_status(self.nodes[0], myopid)

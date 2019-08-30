@@ -24,7 +24,7 @@ class WalletNullifiersTest (BitcoinTestFramework):
         # send node 0 taddr to zaddr to get out of coinbase
         mytaddr = self.nodes[0].getnewaddress()
         recipients = []
-        recipients.append({"address":myzaddr0, "amount":Decimal('10.0')-Decimal('0.0001')}) # utxo amount less fee
+        recipients.append({"address":myzaddr0, "amount":Decimal('12.5')-Decimal('0.0001')}) # utxo amount less fee
         
         wait_and_assert_operationid_status(self.nodes[0], self.nodes[0].z_sendmany(mytaddr, recipients), timeout=120)
 
