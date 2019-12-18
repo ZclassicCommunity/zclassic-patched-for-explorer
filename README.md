@@ -1,4 +1,4 @@
-ZClassic 2.0.6
+ZClassic 2.0.6-1
 <img align="right" width="120" height="80" src="doc/imgs/logo.png">
 ===========
 
@@ -39,6 +39,7 @@ height.
 ### Building
 
 Build ZClassic along with most dependencies from source by running:
+
 
 ```
 ./zcutil/build.sh -j$(nproc)
