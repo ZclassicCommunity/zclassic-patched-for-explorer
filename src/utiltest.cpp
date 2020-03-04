@@ -57,7 +57,7 @@ CWalletTx GetValidReceive(ZCJoinSplit& params,
     uint32_t consensusBranchId = SPROUT_BRANCH_ID;
     CScript scriptCode;
     CTransaction signTx(mtx);
-    uint256 dataToBeSigned = SignatureHash(scriptCode, signTx, NOT_AN_INPUT, SIGHASH_ALL, 0, consensusBranchId);
+    uint256 dataToBeSigned = SignatureHash(scriptCode, signTx, NOT_AN_INPUT, SigHashType(), 0, consensusBranchId);
 
     // Add the signature
     assert(crypto_sign_detached(&mtx.joinSplitSig[0], NULL,
@@ -140,7 +140,7 @@ CWalletTx GetValidSpend(ZCJoinSplit& params,
     uint32_t consensusBranchId = SPROUT_BRANCH_ID;
     CScript scriptCode;
     CTransaction signTx(mtx);
-    uint256 dataToBeSigned = SignatureHash(scriptCode, signTx, NOT_AN_INPUT, SIGHASH_ALL, 0, consensusBranchId);
+    uint256 dataToBeSigned = SignatureHash(scriptCode, signTx, NOT_AN_INPUT, SigHashType(), 0, consensusBranchId);
 
     // Add the signature
     assert(crypto_sign_detached(&mtx.joinSplitSig[0], NULL,
