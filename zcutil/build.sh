@@ -69,7 +69,7 @@ set -x
 # If --enable-lcov is the first argument, enable lcov coverage support:
 LCOV_ARG=''
 HARDENING_ARG='--enable-hardening'
-TEST_ARG=''
+TEST_ARG='--enable-tests=no'
 if [ "x${1:-}" = 'x--enable-lcov' ]
 then
     LCOV_ARG='--enable-lcov'
